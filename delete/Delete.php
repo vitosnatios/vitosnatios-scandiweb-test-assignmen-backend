@@ -23,14 +23,15 @@ class Delete extends Database
         $stmt->execute();
 
         if ($stmt->affected_rows > 0) {
-          echo "Successfully deleted item with id " . $id . "!";
+          echo json_encode("Successfully deleted item with id " . $id . "!");
         } else {
-          echo "Some problem on removing item with id " . $id . "!";
+          echo json_encode("Some problem on removing item with id " . $id . "!");
         }
         $stmt->close();
       }
 
       $this->closeConnection();
+      http_response_code(200);
     } catch (\Throwable $th) {
       throw $th;
     }
