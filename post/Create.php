@@ -31,9 +31,9 @@ class Create extends Database
       $stmt->execute();
 
       if ($stmt->affected_rows > 0) {
-        echo "Sucess!";
+        echo json_encode(["message" => "Success!"]);
       } else {
-        echo "Error to create new product.";
+        echo json_encode(["message" => "Error to create new product."]);;
       }
 
       $stmt->close();
