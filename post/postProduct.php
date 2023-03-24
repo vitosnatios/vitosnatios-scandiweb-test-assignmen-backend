@@ -12,13 +12,8 @@ if (
   && isset($body->price) && isset($body->productType)
   && isset($body->attribute)
 ) {
-  $sku = $body->sku;
-  $name = $body->name;
-  $price = $body->price;
-  $productType = $body->productType;
-  $attribute = $body->attribute;
-
-  $create = new Create($sku, $name, $price, $productType, $attribute);
+  $product = $body;
+  $create = new Create($product);
   $create->createProduct();
 } else {
   print('Some of the values are missing.');

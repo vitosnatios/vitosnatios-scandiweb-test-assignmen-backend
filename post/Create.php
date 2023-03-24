@@ -3,20 +3,19 @@ include '../DbConnection.php';
 
 class Create extends Database
 {
-  private $sku;
-  private $name;
-  private $price;
-  private $productType;
+  private $product;
   private $attribute;
 
-  public function __construct($sku, $name, $price, $productType, $attribute)
+  public function __construct($product)
   {
     parent::__construct();
-    $this->sku = $sku;
-    $this->name = $name;
-    $this->price = $price;
-    $this->productType = $productType;
-    $this->attribute = $attribute;
+    $this->product = $product;
+    $this->attribute = $product->attribute;
+  }
+
+  private function getSerializeAttributes()
+  {
+    return serialize($this->attribute);
   }
 
   public function createProduct()
@@ -24,10 +23,11 @@ class Create extends Database
     try {
       $db = $this->getConnection();
 
+      $serializedAttribute = $this->getSerializeAttributes();
       $query = "INSERT INTO products (sku, name, price, productType, attribute) VALUES (?, ?, ?, ?, ?)";
 
       $stmt = $db->prepare($query);
-      $stmt->bind_param('ssiss', $this->sku, $this->name, $this->price, $this->productType, $this->attribute);
+      $stmt->bind_param('ssiss', $this->product->sku, $this->product->name, $this->product->price, $this->product->productType, $serializedAttribute);
       $stmt->execute();
 
       if ($stmt->affected_rows > 0) {

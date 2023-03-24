@@ -1,5 +1,8 @@
 <?php
 include '../DbConnection.php';
+include '../Product/Furniture.php';
+include '../Product/Dvd.php';
+include '../Product/Book.php';
 
 class Read extends Database
 {
@@ -15,7 +18,17 @@ class Read extends Database
 
       if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-          $data[] = $row;
+          $rowType = $row['productType'];
+          $product = null;
+          if ($rowType === 'furniture') {
+            $product = new Furniture($row);
+          } else if ($rowType === 'dvd') {
+            $product = new Dvd($row);
+          } else if ($rowType === 'book') {
+            $product = new Book($row);
+          }
+          $formated = $product->getFormatedAttributes();
+          $data[] = $formated;
         }
       }
 
